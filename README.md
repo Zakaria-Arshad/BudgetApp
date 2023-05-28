@@ -1,4 +1,4 @@
-# My Budget App
+# Controlling my NYC Spending: A Budget App
 
 The Budget App is a web application built using React, JavaScript, HTML, and CSS. It provides a user-friendly interface for managing budgets and expenses, allowing users to track their spending and stay within their financial limits.
 
