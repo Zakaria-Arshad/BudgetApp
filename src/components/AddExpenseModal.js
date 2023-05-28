@@ -9,15 +9,15 @@ export default function AddExpenseModal({ show, handleClose, defaultBudgetId }) 
     const descriptionRef = useRef()
     const amountRef = useRef()
     const budgetIdRef = useRef()
-    // uses custom hook useBudgets to add a new budget to list of budgets
+    // uses custom hook useBudgets to add a new expense to list of budgets
     const { addExpense, budgets } = useBudgets()
     // handleSubmit is triggered when a form is submitted. it prevents default form submission
-    // calls addBudget function with the name and max spending values, then closes the modal
+    // calls addBudget function with the description, amount and budgetId, then closes the modal
     function handleSubmit(e){
         e.preventDefault()
         addExpense(
         {
-            descriptionRef: descriptionRef.current.value,
+            description: descriptionRef.current.value,
             amount: parseFloat(amountRef.current.value),
             budgetId: budgetIdRef.current.value
         }
@@ -33,7 +33,7 @@ export default function AddExpenseModal({ show, handleClose, defaultBudgetId }) 
         <Form onSubmit={handleSubmit}>
             {/* Renders the header of the modal with a close button */}
             <Modal.Header closeButton>
-                {/* Displays "New Budget" in the modal header */}
+                {/* Displays "New Expense" in the modal header */}
                 <Modal.Title>New Expense</Modal.Title>
             </Modal.Header>
             {/* Represents the body section of the modal */}

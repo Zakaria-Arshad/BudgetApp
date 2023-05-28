@@ -6,7 +6,7 @@ import { currencyFormatter } from '../utils';
 import { getSpaceUntilMaxLength } from "@testing-library/user-event/dist/utils";
 
 // Defining the `BudgetCard` component
-export default function BudgetCard( { name, amount, max, gray, onAddExpenseClick }) {
+export default function BudgetCard( { name, amount, max, gray, hideButtons, onAddExpenseClick, onViewExpenseClick }) {
   const classNames = []
   {/* pushes the danger color into array if amount for our BudgetCard is too high*/}
   {/* whatever is in the array will be used for the Card component className, which will change the color of the entire card*/}
@@ -41,10 +41,16 @@ export default function BudgetCard( { name, amount, max, gray, onAddExpenseClick
             />
             )}
             {/* ms-auto pushes buttons to the right side of the stack */}
+            {!hideButtons && (
             <Stack direction="horizontal" gap="2" className="mt-4">
-                <Button variant="outline-primary" className="ms-auto" onClick={onAddExpenseClick}>Add Expense</Button>
-                <Button variant="outline-secondary">View Expenses</Button>
-            </Stack> 
+                <Button 
+                  variant="outline-primary" 
+                  className="ms-auto" 
+                  onClick={onAddExpenseClick}>
+                    Add Expense
+                </Button>
+                <Button onClick={onViewExpenseClick} variant="outline-secondary">View Expenses</Button>
+            </Stack> )}
         </Card.Body>
     </Card>
   )

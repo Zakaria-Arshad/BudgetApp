@@ -45,7 +45,12 @@ export const BudgetsProvider = ({ children }) => {
     }
     // takes an object parameter with an "id" property
     function deleteBudget({ id }) {
-        // TODO : Deal with expenses (uncategorized)
+        setExpenses(prevExpenses => {
+            return prevExpenses.map(expense => {
+                if (expense.budgetId !== id) return expense
+                return { ...expense, budgetId: UNCATEGORIZED_BUDGET_ID}
+            })
+        })
         // update the budgets state using the setBudgets function and the previous budgets (prevBudgets)
         // filter out the budget objects from prevBudgets that have an id different from the provided id
         // return the filtered array of budgets
@@ -59,7 +64,7 @@ export const BudgetsProvider = ({ children }) => {
         // update the budgets state using the setBudgets function and the previous expenses (prevExpenses)
         // filter out the expense objects from prevExpenses that have an id different from the provided id
         // return the filtered array of expenses
-        setBudgets(prevExpenses => {
+        setExpenses(prevExpenses => {
             return prevExpenses.filter(expense => expense.id !== id)
         })
     }
