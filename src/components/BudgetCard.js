@@ -6,7 +6,7 @@ import { currencyFormatter } from '../utils';
 import { getSpaceUntilMaxLength } from "@testing-library/user-event/dist/utils";
 
 // Defining the `BudgetCard` component
-export default function BudgetCard( { name, amount, max, gray }) {
+export default function BudgetCard( { name, amount, max, gray, onAddExpenseClick }) {
   const classNames = []
   {/* pushes the danger color into array if amount for our BudgetCard is too high*/}
   {/* whatever is in the array will be used for the Card component className, which will change the color of the entire card*/}
@@ -26,21 +26,23 @@ export default function BudgetCard( { name, amount, max, gray }) {
                 {/* Displaying the formatted amount and max values using `currencyFormatter` */}
                 <div className="d-flex align-items-baseline">
                     {currencyFormatter.format(amount)} 
-                    <span className="text-muted fs-6 ms-1">
+                    {max && (<span className="text-muted fs-6 ms-1">
                         / {currencyFormatter.format(max)} 
-                    </span>
+                    </span> 
+                    )}
                 </div>
             </Card.Title>
-            <ProgressBar 
+            {max && (<ProgressBar 
                 className="rounded-pill" 
                 variant={getProgressBarVariant(amount, max)}
                 min={0}
                 max={max}
                 now={amount} 
             />
+            )}
             {/* ms-auto pushes buttons to the right side of the stack */}
             <Stack direction="horizontal" gap="2" className="mt-4">
-                <Button variant="outline-primary" className="ms-auto">Add Expense</Button>
+                <Button variant="outline-primary" className="ms-auto" onClick={onAddExpenseClick}>Add Expense</Button>
                 <Button variant="outline-secondary">View Expenses</Button>
             </Stack> 
         </Card.Body>

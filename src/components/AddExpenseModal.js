@@ -1,22 +1,25 @@
 import { Form, Modal, Button } from "react-bootstrap"
 import { useRef } from "react"
-import { useBudgets } from "../contexts/BudgetsContext"
+import { useBudgets, UNCATEGORIZED_BUDGET_ID } from "../contexts/BudgetsContext"
+
 
 // component receives two props, show and handleClose, controlling visibility and its close
-export default function AddBudgetModal({ show, handleClose }) {
-    // creates a reference with useRef hook to store the value of the name and maximum spending input field
-    const nameRef = useRef()
-    const maxRef = useRef()
+// third prop defaultBudgetId allows us to have a default uncategorized value
+export default function AddExpenseModal({ show, handleClose, defaultBudgetId }) {
+    const descriptionRef = useRef()
+    const amountRef = useRef()
+    const budgetIdRef = useRef()
     // uses custom hook useBudgets to add a new budget to list of budgets
-    const { addBudget } = useBudgets()
+    const { addExpense, budgets } = useBudgets()
     // handleSubmit is triggered when a form is submitted. it prevents default form submission
     // calls addBudget function with the name and max spending values, then closes the modal
     function handleSubmit(e){
         e.preventDefault()
-        addBudget(
+        addExpense(
         {
-            name: nameRef.current.value,
-            max: parseFloat(maxRef.current.value)
+            descriptionRef: descriptionRef.current.value,
+            amount: parseFloat(amountRef.current.value),
+            budgetId: budgetIdRef.current.value
         }
         )
         handleClose()
@@ -31,20 +34,28 @@ export default function AddBudgetModal({ show, handleClose }) {
             {/* Renders the header of the modal with a close button */}
             <Modal.Header closeButton>
                 {/* Displays "New Budget" in the modal header */}
-                <Modal.Title>New Budget</Modal.Title>
+                <Modal.Title>New Expense</Modal.Title>
             </Modal.Header>
             {/* Represents the body section of the modal */}
             <Modal.Body>
                 {/* Groups related form elements together */}
-                <Form.Group className="mb-3" controlId="name">
-                    <Form.Label>Name</Form.Label>
-                    {/* Renders an input field to be filled. ref attribute used to associate the input field with nameRef reference */}
-                    <Form.Control ref={nameRef} type="text" required/>
+                <Form.Group className="mb-3" controlId="description">
+                    <Form.Label>Description</Form.Label>
+                    <Form.Control ref={descriptionRef} type="text" required/>
                 </Form.Group>
-                <Form.Group className="mb-3" controlId="max">
+                <Form.Group className="mb-3" controlId="amount">
+                    <Form.Label>Amount</Form.Label>
+                    <Form.Control ref={amountRef} type="number" required min={0} step={0.01}/>
+                </Form.Group>
+                <Form.Group className="mb-3" controlId="budgetId">
                     {/* Renders an input field that takes decimal values, with a min value of 0 and step of .01*/}
-                    <Form.Label>Maximum Spending</Form.Label>
-                    <Form.Control ref={maxRef} type="number" required min={0} step={0.01}/>
+                    <Form.Label>Budget</Form.Label>
+                    <Form.Select defaultValue={defaultBudgetId} ref={budgetIdRef}>
+                        <option id={UNCATEGORIZED_BUDGET_ID}>Uncategorized</option>
+                        {budgets.map(budget => (
+                            <option key={budget.id} value={budget.id}>{budget.name}  </option>
+                        ))}
+                    </Form.Select>
                 </Form.Group>
                 {/* flex display, aligns content to end of container */}
                 <div className="d-flex justify-content-end">
