@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { v4 as uuidV4 } from 'uuid'
 import useLocalStorage from '../hooks/useLocalStorage'
 
@@ -18,19 +18,27 @@ export const BudgetsProvider = ({ children }) => {
     const [budgets, setBudgets] = useLocalStorage("budgets", []);
     const [expenses, setExpenses] = useLocalStorage("expenses", []);
 
+    // Function to clear expenses array on boot
+    const clearExpensesOnBoot = () => {
+        setExpenses([]); // Set expenses to an empty array
+    };
+
+    // Run clearExpensesOnBoot when the component mounts (on boot)
+    useEffect(() => {
+        clearExpensesOnBoot();
+    }, []);
+  
     // function that takes a parameter called budgetId
     function getBudgetExpenses(budgetId) {
         //return an array of expenses filtered based on the condition where the expense's budgetId matches the provided budgetId.
         return expenses.filter(expense => expense.budgetId === budgetId);
     }
-    function addExpense( {description, amount, budgetId }){
-        // takes our current expneses (our previous)
+    function addExpense({ description, amount, budgetId }) {
         setExpenses(prevExpenses => {
-            // keeping all previous budgets, then add a new expense with a description, amount, and iD
-            /// ... used to make a new array : JS syntax to expand an iterable into indvidual elements
-            return [...prevExpenses, { id: uuidV4(), description, amount, budgetId }]
-        })
-    }
+          const newExpense = { id: uuidV4(), description, amount, budgetId };
+          return [...prevExpenses, newExpense];
+        });
+      }
 
     function addBudget( {name, max }){
         // takes our current budgets (our previous)
@@ -59,15 +67,11 @@ export const BudgetsProvider = ({ children }) => {
         })
     }
 
-    // takes an object parameter with an "id" property
     function deleteExpense({ id }) {
-        // update the budgets state using the setBudgets function and the previous expenses (prevExpenses)
-        // filter out the expense objects from prevExpenses that have an id different from the provided id
-        // return the filtered array of expenses
         setExpenses(prevExpenses => {
-            return prevExpenses.filter(expense => expense.id !== id)
-        })
-    }
+          return prevExpenses.filter(expense => expense.id !== id);
+        });
+      }
 
 
     return (
