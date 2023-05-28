@@ -18,16 +18,6 @@ export const BudgetsProvider = ({ children }) => {
     const [budgets, setBudgets] = useLocalStorage("budgets", []);
     const [expenses, setExpenses] = useLocalStorage("expenses", []);
 
-    // Function to clear expenses array on boot
-    const clearExpensesOnBoot = () => {
-        setExpenses([]); // Set expenses to an empty array
-    };
-
-    // Run clearExpensesOnBoot when the component mounts (on boot)
-    useEffect(() => {
-        clearExpensesOnBoot();
-    }, []);
-  
     // function that takes a parameter called budgetId
     function getBudgetExpenses(budgetId) {
         //return an array of expenses filtered based on the condition where the expense's budgetId matches the provided budgetId.
