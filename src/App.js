@@ -32,7 +32,7 @@ function App() {
     <Container className="my-4"> 
         <Stack direction="horizontal" gap="2" className="mb-4">
           {/* Add budget and add expensesButtons */}
-          <h1 className="me-auto">Budgets</h1>
+          <h2 className="me-auto">Controlling My NYC Spending: A Budget App by Zakaria Arshad</h2>
           {/* Renders "Add Budget" button. When clicked, it invokes setShowAddBudgetModal to set it to true */}
           <Button variant="primary" onClick={() => setShowAddBudgetModal(true)}>Add Budget</Button>
           <Button variant="outline-primary" onClick={openAddExpenseModal}>Add Expense</Button>
