@@ -1,66 +1,62 @@
-// Importing the `Card` component from the React Bootstrap library
-import { Button, Card, ProgressBar, Stack} from "react-bootstrap";
-
-// Importing the `currencyFormatter` from the '../utils' module
+import { Button, Card, ProgressBar, Stack } from "react-bootstrap";
 import { currencyFormatter } from '../utils';
-import { getSpaceUntilMaxLength } from "@testing-library/user-event/dist/utils";
 
-// Defining the `BudgetCard` component
-export default function BudgetCard( { name, amount, max, gray, hideButtons, onAddExpenseClick, onViewExpenseClick }) {
-  const classNames = []
-  {/* pushes the danger color into array if amount for our BudgetCard is too high*/}
-  {/* whatever is in the array will be used for the Card component className, which will change the color of the entire card*/}
+export default function BudgetCard({ name, amount, max, gray, hideButtons, onAddExpenseClick, onViewExpenseClick }) {
+  const remainingAmount = max - amount;
+
+  const classNames = [];
   if (amount > max) {
-    classNames.push("bg-danger", "bg-opacity-10")
+    classNames.push("bg-danger", "bg-opacity-10");
   } else if (gray) {
-    classNames.push("bg-light")
+    classNames.push("bg-light");
   }
 
   return (
-    // Creating a card using the `Card` component from Bootstrap
     <Card className={classNames.join(" ")}>
-        <Card.Body>
-            <Card.Title className="d-flex justify-content-between align-items-baseline fw-normal mb-3">
-                {/* Displaying the budget name */}
-                <div className="me-2">{name}</div>
-                {/* Displaying the formatted amount and max values using `currencyFormatter` */}
-                <div className="d-flex align-items-baseline">
-                    {currencyFormatter.format(amount)} 
-                    {max && (<span className="text-muted fs-6 ms-1">
-                        / {currencyFormatter.format(max)} 
-                    </span> 
-                    )}
-                </div>
-            </Card.Title>
-            {max && (<ProgressBar 
-                className="rounded-pill" 
-                variant={getProgressBarVariant(amount, max)}
-                min={0}
-                max={max}
-                now={amount} 
-            />
+      <Card.Body>
+        <Card.Title className="d-flex justify-content-between align-items-baseline fw-normal mb-3">
+          <div className="me-2">{name}</div>
+          <div className="d-flex align-items-baseline">
+            {currencyFormatter.format(amount)}
+            {max && (
+              <span className="text-muted fs-6 ms-1">
+                / {currencyFormatter.format(max)}
+              </span>
             )}
-            {/* ms-auto pushes buttons to the right side of the stack */}
-            {!hideButtons && (
-            <Stack direction="horizontal" gap="2" className="mt-4">
-                <Button 
-                  variant="outline-primary" 
-                  className="ms-auto" 
-                  onClick={onAddExpenseClick}>
-                    Add Expense
-                </Button>
-                <Button onClick={onViewExpenseClick} variant="outline-secondary">View Expenses</Button>
-            </Stack> )}
-        </Card.Body>
+          </div>
+        </Card.Title>
+        {max && (
+          <ProgressBar
+            className="rounded-pill"
+            variant={getProgressBarVariant(amount, max)}
+            min={0}
+            max={max}
+            now={amount}
+          />
+        )}
+        {!hideButtons && (
+          <Stack direction="horizontal" gap="2" className="mt-4">
+            <Button variant="outline-primary" className="ms-auto" onClick={onAddExpenseClick}>
+              Add Expense
+            </Button>
+            <Button onClick={onViewExpenseClick} variant="outline-secondary">
+              View Expenses
+            </Button>
+          </Stack>
+        )}
+        {max && (
+          <div className="mt-2 text-muted">
+            Remaining: {currencyFormatter.format(remainingAmount)}
+          </div>
+        )}
+      </Card.Body>
     </Card>
-  )
+  );
 }
 
-{/* primary, warning, and danger are built in variants for the ProgressBar component */}
 function getProgressBarVariant(amount, max) {
-    const ratio = amount / max;
-    if (ratio < .5) return "primary"
-    if (ratio <.75) return "warning"
-    return "danger"
+  const ratio = amount / max;
+  if (ratio < 0.5) return "primary";
+  if (ratio < 0.75) return "warning";
+  return "danger";
 }
-

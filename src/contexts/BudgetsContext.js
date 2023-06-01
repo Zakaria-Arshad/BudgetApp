@@ -18,6 +18,17 @@ export const BudgetsProvider = ({ children }) => {
     const [budgets, setBudgets] = useLocalStorage("budgets", []);
     const [expenses, setExpenses] = useLocalStorage("expenses", []);
 
+    const markExpenseAsPaid = ({ id, isPaid }) => {
+        setExpenses(prevExpenses => {
+          return prevExpenses.map(expense => {
+            if (expense.id === id) {
+              return { ...expense, isPaid };
+            }
+            return expense;
+          });
+        });
+      };
+      
     // function that takes a parameter called budgetId
     function getBudgetExpenses(budgetId) {
         //return an array of expenses filtered based on the condition where the expense's budgetId matches the provided budgetId.
@@ -72,7 +83,8 @@ export const BudgetsProvider = ({ children }) => {
         addExpense,
         addBudget,
         deleteBudget,
-        deleteExpense
+        deleteExpense,
+        markExpenseAsPaid
     }}>
         {children}
     </BudgetsContext.Provider>
