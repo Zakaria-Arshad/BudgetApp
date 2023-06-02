@@ -9,7 +9,11 @@ Adding and Removing Expenses: Users can add expenses to their budgets by providi
 
 Viewing Specific Expenses: Users can view the expenses associated with a particular budget. This feature enables them to have a detailed breakdown of their spending within each budget category.
 
-Visualization of Budget Spending: The app provides a visual representation of how much of a budget has been spent. Users can see at a glance how close they are to reaching their spending limit for a specific budget.
+Visualization of Budget Spending: The app provides a visual representation of how much of a budget has been spent. Users can see at a glance how close they are to reaching their spending limit for a specific budget through a progress bar.
+
+See Remaining Budget: The remaining budget is automatically calculated and displayed for each budget.
+
+Checkmark if paid: Easily track which expenses have already been paid.
 
 ## Technologies Used
 
